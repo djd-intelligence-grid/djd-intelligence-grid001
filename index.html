@@ -441,4 +441,100 @@
   <div class="wrap">
     <div class="section-head">
       <div class="section-label">How it works</div>
+      <section class="section" id="wall" style="border-top:1px solid rgba(244,240,227,0.1);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Open to everyone, equally</div>
+      <h2>Community Wall</h2>
+    </div>
+
+    <div class="wall-banner">
+      <span class="flag">Not verified · Not endorsed</span>
+      <p>This section is <strong>self-posted opinion</strong>, not sourced record. Anyone — any venue, business, or individual, regardless of who they support — can request a slot on the same terms. Republic Portal does not review, rank, or endorse what's posted here.</p>
+    </div>
+
+    <div class="wall-grid">
+      <div class="wall-card">
+        <div class="wall-card-tag"><span>Local Business</span><span class="self-id">Self-posted</span></div>
+        <p class="wall-poster">Boardwalk Hardware Co.</p>
+        <p class="wall-role">Supports: M. Alvarez</p>
+        <p class="wall-text">"We've watched three storms wreck our storefront in five years. Alvarez's flood infrastructure bill is the only plan we've seen with real funding attached, not just a promise."</p>
+      </div>
+
+      <div class="wall-card">
+        <div class="wall-card-tag"><span>Community Member</span><span class="self-id">Self-posted</span></div>
+        <p class="wall-poster">R. Devereux</p>
+        <p class="wall-role">Supports: D. Whitfield</p>
+        <p class="wall-text">"My property taxes went up again this year. Whitfield's rollback plan is the first one that actually says a number instead of just 'relief is coming.'"</p>
+      </div>
+
+      <div class="wall-card">
+        <div class="wall-card-tag"><span>Civic Group</span><span class="self-id">Self-posted</span></div>
+        <p class="wall-poster">AC Neighbors United</p>
+        <p class="wall-role">No endorsement — issue statement</p>
+        <p class="wall-text">"We're not backing a candidate. We just want whoever wins to answer for the housing waitlist. We'll be posting updates here regardless of who's in office."</p>
+      </div>
+    </div>
+
+    <div class="wall-cta">
+      <p>Have space, a platform, or a statement to contribute? Request a Community Wall slot — offered on equal terms to all.</p>
+      <button class="btn">Request a slot</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how" style="border-top:1px solid rgba(244,240,227,0.1);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">How it works</div>
+      <h2>Three steps. No verdicts.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">01</div>
+        <h4>You choose the area and issue</h4>
+        <p>Search by ZIP or district. See the issues most documented as affecting that specific community.</p>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <h4>We surface the record</h4>
+        <p>Every candidate on the ballot who has gone on record — bills, votes, public statements — on that issue, sourced and linked.</p>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h4>You look further</h4>
+        <p>No ranking, no recommendation. Just a starting point to read the full record yourself and decide what matters to you and your community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="neutrality-policy">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">Republic Portal</div>
+        <p class="foot-disclaimer">A civic issue-education project. Republic Portal does not endorse or oppose any candidate or political party. All content is limited to issue advocacy and sourced public record.</p>
+        <p class="foot-disclaimer" style="margin-top:12px;">Issue Compass is built and maintained with AI-assisted tools, part of the DJD Intelligence Group.</p>
+      </div>
+      <div class="foot-links">
+        <a href="#" id="about">About</a>
+        <a href="#">Sourcing standards</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+    </html>
     
