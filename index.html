@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Issue Compass — Republic Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12151A;
+    --paper:#F4F0E3;
+    --paper-dim:#EAE4D1;
+    --brass:#B08D46;
+    --brass-light:#D6BC85;
+    --red:#8C3B3B;
+    --green:#3F6B4E;
+    --slate:#5B6470;
+    --line: rgba(18,21,26,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:2px solid var(--brass-light); outline-offset:3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,21,26,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid rgba(244,240,227,0.12);
+  }
+  .header-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 0;
+  }
+  .mark{display:flex; align-items:center; gap:12px;}
+  .mark-seal{
+    width:34px; height:34px; border-radius:50%;
+    border:1.5px solid var(--brass);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-size:15px; color:var(--brass-light);
+  }
+  .mark-text{font-family:'Fraunces', serif; font-size:17px; letter-spacing:0.02em;}
+  .mark-text span{color:var(--brass-light); font-style:italic;}
+  nav{display:flex; gap:28px; font-size:14px; color:var(--slate);}
+  nav a{text-decoration:none; color:#C9C3B0; transition:color .15s;}
+  nav a:hover{color:var(--brass-light);}
+  @media (max-width:640px){ nav{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:88px 0 56px; border-bottom:1px solid rgba(244,240,227,0.1);}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--brass-light); margin-bottom:22px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--brass);}
+  h1{
+    font-family:'Fraunces', serif; font-weight:500; font-size:clamp(34px,5vw,54px);
+    line-height:1.08; margin:0 0 22px; max-width:15ch; letter-spacing:-0.01em;
+  }
+  h1 em{color:var(--brass-light); font-style:italic;}
+  .hero p{
+    font-size:17px; color:#C9C3B0; max-width:52ch; line-height:1.6; margin:0 0 40px;
+  }
+
+  .search-panel{
+    background:var(--paper); color:var(--ink); border-radius:2px;
+    padding:26px; max-width:640px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  }
+  .search-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .search-row input{
+    flex:1; min-width:200px;
+    font-family:'IBM Plex Mono', monospace; font-size:15px;
+    padding:14px 16px; border:1.5px solid var(--ink); border-radius:1px;
+    background:#fff; color:var(--ink);
+  }
+  .search-row input::placeholder{color:#8b8474;}
+  .btn{
+    font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:14.5px;
+    padding:14px 24px; background:var(--ink); color:var(--paper);
+    border:none; border-radius:1px; cursor:pointer; letter-spacing:0.01em;
+    transition: background .15s;
+  }
+  .btn:hover{background:#2a2f38;}
+  .search-note{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate);
+    margin-top:14px; letter-spacing:0.01em;
+  }
+
+  /* ---------- ISSUE CHIPS ---------- */
+  .section{padding:64px 0;}
+  .section-head{margin-bottom:34px;}
+  .section-label{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; text-transform:uppercase;
+    letter-spacing:0.08em; color:var(--brass-light); margin-bottom:10px;
+  }
+  .section h2{
+    font-family:'Fraunces', serif; font-weight:500; font-size:28px; margin:0;
+  }
+  .locality{color:var(--slate); font-family:'IBM Plex Mono', monospace; font-size:13px; margin-top:8px;}
+
+  .chip-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px;}
+  .chip{
+    font-family:'IBM Plex Mono', monospace; font-size:13px;
+    padding:10px 16px; border:1px solid rgba(244,240,227,0.25); border-radius:20px;
+    background:transparent; color:#C9C3B0; cursor:pointer; transition: all .15s;
+  }
+  .chip.active{background:var(--brass); border-color:var(--brass); color:var(--ink); font-weight:500;}
+  .chip:hover:not(.active){border-color:var(--brass-light); color:var(--brass-light);}
+
+  /* ---------- RECORD CARDS ---------- */
+  .cards{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:38px;}
+  @media (max-width:760px){ .cards{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--paper); color:var(--ink); border-radius:2px;
+    padding:0; position:relative; overflow:hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  }
+  .card-top{
+    padding:24px 24px 18px; border-bottom:1px dashed var(--line);
+    display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
+  }
+  .cand-name{font-family:'Fraunces', serif; font-size:21px; font-weight:600; margin:0 0 4px;}
+  .cand-meta{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate);}
+  .party-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.04em;
+    padding:5px 10px; border-radius:2px; white-space:nowrap; text-transform:uppercase;
+    border:1px solid var(--slate); color:var(--slate);
+  }
+
+  .stamp{
+    position:absolute; top:20px; right:20px;
+    width:64px; height:64px; border-radius:50%;
+    border:1.5px solid var(--green); color:var(--green);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:'IBM Plex Mono', monospace; font-size:8.5px; font-weight:500;
+    letter-spacing:0.03em; text-transform:uppercase; line-height:1.25;
+    transform:rotate(8deg); opacity:0.85; padding:4px;
+  }
+
+  .card-body{padding:20px 24px 26px;}
+  .record-label{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--brass); margin-bottom:8px;
+  }
+  .record-quote{
+    font-family:'Fraunces', serif; font-size:16.5px; line-height:1.5; font-style:italic;
+    color:#2b2a24; margin:0 0 16px; padding-left:14px; border-left:2px solid var(--brass);
+  }
+  .source-line{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--slate);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    border-top:1px solid var(--line); padding-top:14px;
+  }
+  .source-line a{text-decoration:underline; color:var(--ink);}
+
+  /* ---------- NEUTRALITY BLOCK ---------- */
+  .neutrality{
+    margin-top:44px; padding:26px 28px; border:1px solid rgba(140,59,59,0.4);
+    background:rgba(140,59,59,0.08); border-radius:2px;
+    display:flex; gap:18px; align-items:flex-start;
+  }
+  .neutrality .flag{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--red);
+    border:1px solid var(--red); padding:4px 9px; border-radius:2px; white-space:nowrap;
+    text-transform:uppercase; letter-spacing:0.05em;
+  }
+  .neutrality p{margin:0; font-size:14.5px; line-height:1.6; color:#E4DFCF;}
+  .neutrality strong{color:var(--paper);}
+
+  /* ---------- TIMELINE MODULE ---------- */
+  .timeline-wrap{
+    background:var(--paper); color:var(--ink); border-radius:2px; padding:30px 30px 26px; margin-top:6px;
+  }
+  .timeline-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:10px; margin-bottom:26px;}
+  .timeline-head h3{font-family:'Fraunces', serif; font-size:19px; margin:0;}
+  .sample-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--slate);
+    border:1px solid var(--line); padding:4px 9px; border-radius:2px; text-transform:uppercase;
+  }
+  .tl-track{position:relative; height:64px; margin:0 4px;}
+  .tl-line{position:absolute; top:32px; left:0; right:0; height:1px; background:var(--line);}
+  .tl-points{position:absolute; top:0; left:0; right:0; display:flex; justify-content:space-between;}
+  .tl-point{display:flex; flex-direction:column; align-items:center; width:110px;}
+  .tl-dot{width:9px; height:9px; border-radius:50%; background:var(--brass); margin-top:27px; margin-bottom:10px; z-index:2;}
+  .tl-label{font-family:'IBM Plex Mono', monospace; font-size:11px; text-align:center; color:var(--slate);}
+  .tl-label b{display:block; color:var(--ink); font-size:12px; margin-bottom:2px;}
+  .timeline-note{font-size:13.5px; color:var(--slate); margin-top:22px; line-height:1.6; max-width:60ch;}
+
+  /* ---------- COMMUNITY WALL ---------- */
+  .wall-banner{
+    display:flex; gap:16px; align-items:flex-start;
+    padding:22px 24px; border:1px solid rgba(176,141,70,0.4);
+    background:rgba(176,141,70,0.08); border-radius:2px; margin-bottom:34px;
+  }
+  .wall-banner .flag{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--brass-light);
+    border:1px solid var(--brass); padding:4px 9px; border-radius:2px; white-space:nowrap;
+    text-transform:uppercase; letter-spacing:0.05em;
+  }
+  .wall-banner p{margin:0; font-size:14.5px; line-height:1.6; color:#E4DFCF;}
+  .wall-banner strong{color:var(--paper);}
+
+  .wall-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px;}
+  @media (max-width:900px){ .wall-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:640px){ .wall-grid{grid-template-columns:1fr;} }
+
+  .wall-card{
+    background:var(--paper-dim); color:var(--ink); border-radius:2px;
+    padding:20px; position:relative; border-left:3px solid var(--brass);
+  }
+  .wall-card-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:10px; text-transform:uppercase;
+    letter-spacing:0.05em; color:var(--slate); margin-bottom:12px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .wall-card-tag .self-id{
+    background:var(--ink); color:var(--paper); padding:3px 8px; border-radius:2px;
+    font-size:9.5px;
+  }
+  .wall-poster{font-family:'Fraunces', serif; font-size:16px; font-weight:600; margin:0 0 4px;}
+  .wall-role{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--slate); margin-bottom:12px;}
+  .wall-text{font-size:14px; line-height:1.55; color:#2b2a24; margin:0;}
+
+  .wall-cta{
+    margin-top:30px; padding:24px; border:1px dashed rgba(244,240,227,0.3);
+    border-radius:2px; text-align:center;
+  }
+  .wall-cta p{margin:0 0 14px; font-size:14px; color:#C9C3B0;}
+  .wall-cta .btn{background:var(--brass); color:var(--ink);}
+  .wall-cta .btn:hover{background:var(--brass-light);}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:30px;}
+  @media (max-width:760px){ .steps{grid-template-columns:1fr;} }
+  .step{border-top:1px solid rgba(244,240,227,0.18); padding-top:18px;}
+  .step .n{font-family:'IBM Plex Mono', monospace; color:var(--brass-light); font-size:12px; margin-bottom:10px;}
+  .step h4{font-family:'Fraunces', serif; font-weight:500; font-size:18px; margin:0 0 10px;}
+  .step p{font-size:14px; color:#C9C3B0; line-height:1.6; margin:0;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid rgba(244,240,227,0.12); padding:40px 0 50px; margin-top:20px;}
+  .foot-grid{display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px;}
+  .foot-brand{font-family:'Fraunces', serif; font-size:15px; color:var(--brass-light); margin-bottom:8px;}
+  .foot-disclaimer{font-size:12.5px; color:var(--slate); max-width:44ch; line-height:1.6;}
+  .foot-links{display:flex; gap:20px; font-size:13px; color:#C9C3B0;}
+  .foot-links a{text-decoration:none;}
+  .foot-links a:hover{color:var(--brass-light);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <div class="mark">
+      <div class="mark-seal">R</div>
+      <div class="mark-text">Republic Portal <span>— Issue Compass</span></div>
+    </div>
+    <nav>
+      <a href="#wall">Community Wall</a>
+      <a href="#how">How it works</a>
+      <a href="#neutrality-policy">Neutrality policy</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">A Republic Portal civic record project</div>
+    <h1>Find out who's <em>on record</em> for the issue you live with.</h1>
+    <p>Enter your area. See what candidates have actually said, sponsored, or voted on for the issues that affect your daily life — sourced directly, in their own words and voting history. No rankings. No recommendations.</p>
+
+    <div class="search-panel">
+      <div class="search-row">
+        <input type="text" placeholder="Enter ZIP code or district — try 08401" value="08401 — Atlantic City, NJ">
+        <button class="btn">Search the record</button>
+      </div>
+      <div class="search-note">COMMUNITY FIRST · NOT PARTY FIRST — every result links to a primary source</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Step 1 — Local issues detected</div>
+      <h2>What's affecting this area right now</h2>
+      <div class="locality">08401 · ATLANTIC CITY, NJ · 2ND CONGRESSIONAL DISTRICT</div>
+    </div>
+
+    <div class="chip-row">
+      <button class="chip active">Housing Costs</button>
+      <button class="chip">Healthcare Access</button>
+      <button class="chip">Small Business Relief</button>
+      <button class="chip">Flood & Infrastructure</button>
+      <button class="chip">Senior Care</button>
+    </div>
+
+    <div class="section-head" style="margin-top:50px;">
+      <div class="section-label">Step 2 — On the record: Housing Costs</div>
+      <h2>What each candidate has said or done</h2>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="stamp">VERIFIED<br>SOURCE</div>
+        <div class="card-top">
+          <div>
+            <p class="cand-name">M. Alvarez</p>
+            <p class="cand-meta">Incumbent · NJ-02</p>
+          </div>
+          <span class="party-tag">Party A</span>
+        </div>
+        <div class="card-body">
+          <div class="record-label">Sponsored legislation</div>
+          <p class="record-quote">"Co-sponsored the Coastal Housing Stabilization Act, directing rent-relief subsidies to households under 60% area median income."</p>
+          <div class="source-line">
+            <span>H.R. 4417 · 119th Congress</span>
+            <a href="#">View full bill text →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stamp">VERIFIED<br>SOURCE</div>
+        <div class="card-top">
+          <div>
+            <p class="cand-name">D. Whitfield</p>
+            <p class="cand-meta">Challenger · NJ-02</p>
+          </div>
+          <span class="party-tag">Party B</span>
+        </div>
+        <div class="card-body">
+          <div class="record-label">Public campaign statement</div>
+          <p class="record-quote">"Proposed a property-tax rollback for owner-occupied homes and a small-business relief credit tied to local hiring."</p>
+          <div class="source-line">
+            <span>Campaign platform · Jun 2026</span>
+            <a href="#">View full statement →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="neutrality">
+      <span class="flag">Not an endorsement</span>
+      <p>This page shows what each candidate has <strong>said or done</strong> on this issue, with a direct source for every claim. It does not rank, score, or recommend a candidate. Follow the source links and look into the full record before deciding what matters most to you.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="border-top:1px solid rgba(244,240,227,0.1);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Context</div>
+      <h2>How similar policies were received over time</h2>
+    </div>
+
+    <div class="timeline-wrap">
+      <div class="timeline-head">
+        <h3>Public reception, before and after implementation</h3>
+        <span class="sample-tag">Illustrative example — not live data</span>
+      </div>
+      <div class="tl-track">
+        <div class="tl-line"></div>
+        <div class="tl-points">
+          <div class="tl-point"><div class="tl-dot"></div><div class="tl-label"><b>Proposed</b>Opposition highest</div></div>
+          <div class="tl-point"><div class="tl-dot"></div><div class="tl-label"><b>Passed</b>Debate continues</div></div>
+          <div class="tl-point"><div class="tl-dot"></div><div class="tl-label"><b>Year 1</b>Mixed response</div></div>
+          <div class="tl-point"><div class="tl-dot"></div><div class="tl-label"><b>Year 5+</b>Often re-evaluated</div></div>
+        </div>
+      </div>
+      <p class="timeline-note">Some policies are judged very differently once people experience their effects directly than when they were first proposed. This module will show sourced, polled public opinion over time for major local policies — so the record includes not just what was promised, but how it actually played out.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="wall" style="border-top:1px solid rgba(244,240,227,0.1);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Open to everyone, equally</div>
+      <h2>Community Wall</h2>
+    </div>
+
+    <div class="wall-banner">
+      <span class="flag">Not verified · Not endorsed</span>
+      <p>This section is <strong>self-posted opinion</strong>, not sourced record. Anyone — any venue, business, or individual, regardless of who they support — can request a slot on the same terms. Republic Portal does not review, rank, or endorse what's posted here.</p>
+    </div>
+
+    <div class="wall-grid">
+      <div class="wall-card">
+        <div class="wall-card-tag"><span>Local Business</span><span class="self-id">Self-posted</span></div>
+        <p class="wall-poster">Boardwalk Hardware Co.</p>
+        <p class="wall-role">Supports: M. Alvarez</p>
+        <p class="wall-text">"We've watched three storms wreck our storefront in five years. Alvarez's flood infrastructure bill is the only plan we've seen with real funding attached, not just a promise."</p>
+      </div>
+
+      <div class="wall-card">
+        <div class="wall-card-tag"><span>Community Member</span><span class="self-id">Self-posted</span></div>
+        <p class="wall-poster">R. Devereux</p>
+        <p class="wall-role">Supports: D. Whitfield</p>
+        <p class="wall-text">"My property taxes went up again this year. Whitfield's rollback plan is the first one that actually says a number instead of just 'relief is coming.'"</p>
+      </div>
+
+      <div class="wall-card">
+        <div class="wall-card-tag"><span>Civic Group</span><span class="self-id">Self-posted</span></div>
+        <p class="wall-poster">AC Neighbors United</p>
+        <p class="wall-role">No endorsement — issue statement</p>
+        <p class="wall-text">"We're not backing a candidate. We just want whoever wins to answer for the housing waitlist. We'll be posting updates here regardless of who's in office."</p>
+      </div>
+    </div>
+
+    <div class="wall-cta">
+      <p>Have space, a platform, or a statement to contribute? Request a Community Wall slot — offered on equal terms to all.</p>
+      <button class="btn">Request a slot</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how" style="border-top:1px solid rgba(244,240,227,0.1);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">How it works</div>
+    
